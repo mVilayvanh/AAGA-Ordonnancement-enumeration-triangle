@@ -6,48 +6,43 @@
 
 class DirectedGraph:
     def __init__(self) -> None:
-        self.edges = dict()
+        self.successors = dict()
+        self.predecessors = dict()
+        
         self.nodes = set()
+        self.num_edges = 0
+
         self.in_degrees = dict()
         self.out_degrees = dict()
+
         self.computed_degrees = False
         
     def __str__(self) -> str:
-        return str(self.edges)
+        return str(self.successors)
 
     def add_edge(self, u, v) -> None:
-        if u not in self.edges:
-            self.edges[u] = []
-        self.edges[u].append(v)
+        if u not in self.successors:
+            self.successors[u] = set()
+        if v not in self.predecessors:
+            self.predecessors[v] = set()
+        self.predecessors[v].add(u)
+        self.successors[u].add(v)
         self.nodes.add(u)
         self.nodes.add(v)
+        self.num_edges += 1
 
-
-    def get_neighbors(self, node) -> list:
-        return self.edges.get(node, [])
-
-    def is_successor(self, u, v) -> bool:
-        return v in self.edges.get(u, [])
+    def successors_of_node(self, node) -> list:
+        return self.successors.get(node, [])
     
-    def is_predecessor(self, u, v) -> bool:
-        return u in self.edges.get(v, [])
-
-    def successors(self, node) -> list:
-        return self.edges.get(node, [])
-    
-    def predecessors(self, node) -> list:
-        preds = []
-        for u in self.edges:
-            if node in self.edges[u]:
-                preds.append(u)
-        return preds
+    def predecessors_of_node(self, node) -> list:
+        return self.predecessors.get(node, [])
 
     def compute_degrees(self) -> None:
         if self.computed_degrees:
             return
-        for u in self.edges:
-            self.out_degrees[u] = len(self.edges[u])
-            for v in self.edges[u]:
+        for u in self.successors:
+            self.out_degrees[u] = len(self.successors[u])
+            for v in self.successors[u]:
                 if v in self.in_degrees:
                     self.in_degrees[v] += 1
                 else:
@@ -68,3 +63,9 @@ class DirectedGraph:
         if not self.computed_degrees:
             self.compute_degrees()
         return self.get_in_degree(node) + self.get_out_degree(node)
+    
+    def get_num_nodes(self) -> int:
+        return len(self.nodes)
+    
+    def get_num_edges(self) -> int:
+        return self.num_edges
