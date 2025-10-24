@@ -1,4 +1,4 @@
-import utils.directedGraph as dg
+import utils.directed_graph as dg
 
 def A_plus_plus(g:dg.DirectedGraph):
     b = {u: False for u in g.nodes}

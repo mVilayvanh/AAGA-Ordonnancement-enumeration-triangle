@@ -1,3 +1,9 @@
+
+# Structure inspirée de EdgeList du dépôt GitHub :
+# https://github.com/lecfab/volt
+# de Fabrice Lecruyer mentionné dans l'article :
+# Tailored vertex ordering for faster triangle listing in large graphs
+
 class DirectedGraph:
     def __init__(self):
         self.edges = dict()
