@@ -8,12 +8,12 @@ class DirectedGraph:
     def __init__(self) -> None:
         self.edges = dict()
         self.nodes = set()
-        self.in_degrees = {node: 0 for node in self.nodes}
-        self.out_degrees = {node: 0 for node in self.nodes}
+        self.in_degrees = dict()
+        self.out_degrees = dict()
         self.computed_degrees = False
         
     def __str__(self) -> str:
-        return str(self.adj)
+        return str(self.edges)
 
     def add_edge(self, u, v) -> None:
         if u not in self.edges:
@@ -27,10 +27,10 @@ class DirectedGraph:
         return self.edges.get(node, [])
 
     def is_successor(self, u, v) -> bool:
-        return v in self.adj.get(u, [])
+        return v in self.edges.get(u, [])
     
     def is_predecessor(self, u, v) -> bool:
-        return u in self.adj.get(v, [])
+        return u in self.edges.get(v, [])
 
     def successors(self, node) -> list:
         return self.edges.get(node, [])
@@ -48,7 +48,10 @@ class DirectedGraph:
         for u in self.edges:
             self.out_degrees[u] = len(self.edges[u])
             for v in self.edges[u]:
-                self.in_degrees[v] += 1
+                if v in self.in_degrees:
+                    self.in_degrees[v] += 1
+                else:
+                    self.in_degrees[v] = 1
         self.computed_degrees = True
     
     def get_in_degree(self, node) -> int:
