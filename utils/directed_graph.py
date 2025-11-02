@@ -32,10 +32,10 @@ class DirectedGraph:
         self.num_edges += 1
 
     def successors_of_node(self, node) -> list:
-        return self.successors.get(node, [])
+        return self.successors.get(node, set())
     
     def predecessors_of_node(self, node) -> list:
-        return self.predecessors.get(node, [])
+        return self.predecessors.get(node, set())
 
     def compute_degrees(self) -> None:
         if self.computed_degrees:
