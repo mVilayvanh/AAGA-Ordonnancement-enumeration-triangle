@@ -5,19 +5,19 @@ class PlotBuilder:
     def __init__(self):
         self.data = {}
 
-    def add_dataset(self, dataset: str):
+    def add_dataset(self, dataset: str) -> None:
         """Ajoute un dataset à la structure de données."""
         if dataset not in self.data:
             self.data[dataset] = {}
 
-    def add_order(self, dataset: str, order: str):
+    def add_order(self, dataset: str, order: str) -> None:
         """Ajoute un ordonnancement pour un dataset donné."""
         if dataset not in self.data:
             self.add_dataset(dataset)
         if order not in self.data[dataset]:
             self.data[dataset][order] = None
 
-    def add_time(self, dataset: str, order: str, time: float):
+    def add_time(self, dataset: str, order: str, time: float) -> None:
         """Ajoute un temps d'exécution pour un dataset et un ordonnancement donnés."""
         if dataset not in self.data:
             self.add_dataset(dataset)
