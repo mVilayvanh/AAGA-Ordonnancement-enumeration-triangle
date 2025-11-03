@@ -16,8 +16,10 @@ class Clock:
         self.stamp.append(self.end_time - self.start_time)
 
     def elapsed(self):
-        if self.start_time is None or self.end_time is None:
-            raise ValueError("Clock has not been started and stopped properly.")
+        if self.start_time is None:
+            raise ValueError("Clock has not been started properly.")
+        if self.end_time is None:
+            self.stop()
         return self.stamp[-1]
     
     def get_stamps(self):
