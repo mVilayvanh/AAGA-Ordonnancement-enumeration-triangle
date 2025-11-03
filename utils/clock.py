@@ -1,7 +1,6 @@
 import time
 
 class Clock:
-
     def __init__(self):
         self.start_time = None
         self.end_time = None
