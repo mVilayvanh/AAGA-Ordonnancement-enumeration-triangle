@@ -16,3 +16,8 @@ def rank_nodes_by_degree(graph:DG.DirectedGraph, descending:bool=True) -> list:
         nodes.sort(key=cmp_to_key(lambda u, v: compare_degree_asc(graph.get_degree(u), graph.get_degree(v))))
     return nodes
 
+def rank_nodes_by_degree_desc(graph:DG.DirectedGraph) -> list:
+    return rank_nodes_by_degree(graph, descending=True)
+
+def rank_nodes_by_degree_asc(graph:DG.DirectedGraph) -> list:
+    return rank_nodes_by_degree(graph, descending=False)
