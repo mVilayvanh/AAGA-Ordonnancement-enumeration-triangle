@@ -1,37 +1,43 @@
 import utils.directed_graph as DG
 from functools import cmp_to_key
 from collections import defaultdict, deque
+import heapq
 
 def compute_degeneracy_order(g):
-    # Calculate each node's degree
+    """
+    Compute degeneracy ordering for a directed graph (based on in-degree).
+    Equivalent to the C++ algo_kcore version, adapted to DirectedGraph.
+    """
+
     g.compute_degrees()
 
-    # Initialize degrees dictionary {node : degree}
-    degrees = {u: g.get_degree(u) for u in g.nodes}
+    # Compute in-degrees (since graph is directed)
+    in_degrees = {u: g.get_in_degree(u) for u in g.nodes}
 
+    # Initialize min-heap (degree, node)
+    heap = [(deg, u) for u, deg in in_degrees.items()]
+    heapq.heapify(heap)
+
+    visited = set()
     order_list = []
+    degeneracy = 0
 
-    buckets = [[] for _ in range(max(degrees.values()) + 1)] 
-    for u , d in degrees.items():
-        buckets[d].append(u)
+    # Main loop
+    while heap:
+        deg, u = heapq.heappop(heap)
 
-    k = 0
+        # Skip if node already processed
+        if u in visited:
+            continue
 
-    for n in range (len(g.nodes)):
-        i = 0
-        while i < len(buckets) and len(buckets[i]) == 0:
-            i += 1
-        
-        k = max (k, i)
+        visited.add(u)
+        order_list.append(u)
+        degeneracy = max(degeneracy, deg)
 
-        v = buckets[i].pop()
-        order_list.append(v)
-
-        for w in g.successors_of_node(v) | g.predecessors_of_node(v):
-            if(w not in order_list):
-                d_w = degrees[w]
-                buckets[d_w].remove(w)
-                degrees[w] -= 1
-                buckets[d_w - 1].append(w)
+        # Decrease degree of neighbors still in heap
+        for v in g.successors_of_node(u):
+            if v not in visited:
+                in_degrees[v] -= 1
+                heapq.heappush(heap, (in_degrees[v], v))
 
     return order_list

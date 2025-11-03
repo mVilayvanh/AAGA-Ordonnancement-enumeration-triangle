@@ -1,6 +1,6 @@
 import order.order_deg as ODEG
 import order.order_degene as ODEGNE
-import order.order_homo as ODHOMO
+import order.order_similarity as ODSIM
 import order.order_louvain as ODLOUV
 import order.order_clustering as ODCLU
 import utils.file_parser as FP
