@@ -1,6 +1,6 @@
 import order.order_deg as ODEG
 import order.order_degene as ODEGNE
-import order.order_homo as ODHOMO
+import order.order_similarity as ODSIM
 import order.order_louvain as ODLOUV
 import order.order_clustering as ODCLU
 import utils.file_parser as FP
@@ -120,21 +120,21 @@ if __name__ == "__main__":
         print(f"Number of triangles found: {ntri_degen_a1_m}")
         print(f"Number of tringles found: {ntri_degen_a2_m}")
 
-        # --- homophily order ---
+        # --- Similarity order ---
         # --- mere listing ---
-        ranked_homo = ODHOMO.compute_homophily_order(g)
+        ranked_sim = ODSIM.compute_similarity_order(g)
 
         # A++
         clock.start()
-        ntri_homo_a1_m = len(TA.A_plus_plus(g, ranklist=ranked_homo))
+        ntri_sim_a1_m = len(TA.A_plus_plus(g, ranklist=ranked_sim))
         clock.stop()
-        t_homo_a1_m = clock.elapsed()
+        t_sim_a1_m = clock.elapsed()
 
         clock.reset()
 
         # A+-
         clock.start()
-        ntri_homo_a2_m = TA.A_plus_minus(g, ranklist=ranked_homo)
+        ntri_homo_a2_m = TA.A_plus_minus(g, ranklist=ranked_sim)
         clock.stop()
         t_homo_a2_m = clock.elapsed()
 
@@ -144,25 +144,25 @@ if __name__ == "__main__":
 
         # A++
         clock.start()
-        ranked_homo_a1 = ODHOMO.compute_homophily_order(g, tau=0.8, alpha=0.1)
-        ntri_homo_a1_f = len(TA.A_plus_plus(g, ranklist=ranked_homo_a1))
+        ranked_sim_a1 = ODSIM.compute_similarity_order(g)
+        ntri_sim_a1_f = len(TA.A_plus_plus(g, ranklist=ranked_sim_a1))
         clock.stop()
-        t_homo_a1_f = clock.elapsed()
+        t_sim_a1_f = clock.elapsed()
 
         clock.reset()
 
         # A+-
         clock.start()
-        ranked_homo_a2 = ODHOMO.compute_homophily_order(g, tau=0.5, alpha=0.6)
-        ntri_homo_a2_f = TA.A_plus_minus(g, ranklist=ranked_homo_a2)
+        ranked_sim_a2 = ODSIM.compute_similarity_order(g)
+        ntri_sim_a2_f = TA.A_plus_minus(g, ranklist=ranked_sim_a2)
         clock.stop()
-        t_homo_a2_f = clock.elapsed()
+        t_sim_a2_f = clock.elapsed()
 
         clock.reset()
 
-        print(f"Homophily Order - A++: {t_homo_a1_m}s (mere), {t_homo_a1_f}s (full)")
-        print(f"Homophily Order - A+-: {t_homo_a2_m}s (mere), {t_homo_a2_f}s (full)")
-        print(f"Number of triangles found: {ntri_homo_a1_m}")
+        print(f"Homophily Order - A++: {t_sim_a1_m}s (mere), {t_sim_a1_f}s (full)")
+        print(f"Homophily Order - A+-: {t_homo_a2_m}s (mere), {t_sim_a2_f}s (full)")
+        print(f"Number of triangles found: {ntri_sim_a1_m}")
         print(f"Number of tringles found: {ntri_homo_a2_m}")
 
         # --- louvain order ---
@@ -257,12 +257,12 @@ if __name__ == "__main__":
 
 
         with open(result_path_mere, "a") as f:
-            f.write(f"{graph_name} : {t_degree_a1_m}; {t_degree_a2_m}; {t_degen_a1_m}; {t_degen_a2_m}; {t_homo_a1_m}; {t_homo_a2_m}; {t_louv_a1_m}; {t_louv_a2_m}; {t_clus_a1_m}; {t_clus_a2_m}\n")
+            f.write(f"{graph_name} : {t_degree_a1_m}; {t_degree_a2_m}; {t_degen_a1_m}; {t_degen_a2_m}; {t_sim_a1_m}; {t_homo_a2_m}; {t_louv_a1_m}; {t_louv_a2_m}; {t_clus_a1_m}; {t_clus_a2_m}\n")
         with open(result_path_full, "a") as f:
-            f.write(f"{graph_name} : {t_degree_a1_f}; {t_degree_a2_f}; {t_degen_a1_f}; {t_degen_a2_f}; {t_homo_a1_f}; {t_homo_a2_f}; {t_louv_a1_f}; {t_louv_a2_f}; {t_clus_a1_f}; {t_clus_a2_f}\n")
+            f.write(f"{graph_name} : {t_degree_a1_f}; {t_degree_a2_f}; {t_degen_a1_f}; {t_degen_a2_f}; {t_sim_a1_f}; {t_sim_a2_f}; {t_louv_a1_f}; {t_louv_a2_f}; {t_clus_a1_f}; {t_clus_a2_f}\n")
         assert ntri_degree_a1_m == ntri_degree_a2_m == ntri_degree_a1_f == ntri_degree_a2_f == \
                 ntri_degen_a1_m == ntri_degen_a2_m == ntri_degen_a1_f == ntri_degen_a2_f == \
-                ntri_homo_a1_m == ntri_homo_a2_m == ntri_homo_a1_f == ntri_homo_a2_f == \
+                ntri_sim_a1_m == ntri_homo_a2_m == ntri_sim_a1_f == ntri_sim_a2_f == \
                 ntri_louv_a1_m == ntri_louv_a2_m == ntri_louv_a1_f == ntri_louv_a2_f  == \
                 ntri_clus_a1_m == ntri_clus_a2_m == ntri_clus_a1_f == ntri_clus_a2_f, \
                 "Triangle counts are not all equal!"
