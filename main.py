@@ -15,7 +15,7 @@ if __name__ == "__main__":
     rank_functions = [ODEGNE.compute_degeneracy_order, 
                  ODEG.rank_nodes_by_degree_asc, 
                  ODEG.rank_nodes_by_degree_desc,
-                 ODHOMO.compute_homophily_order,
+                 ODSIM.compute_similarity_order,
                  ODLOUV.compute_louvain_order]
     pb_full = PB.PlotBuilder()
     pb_mere = PB.PlotBuilder()
