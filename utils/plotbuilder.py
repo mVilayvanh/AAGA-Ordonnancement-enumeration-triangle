@@ -25,7 +25,7 @@ class PlotBuilder:
             self.add_order(dataset, order)
         self.data[dataset][order] = time
 
-    def show(self, title="Temps d'exécution par dataset et ordonnancement", ylabel="Temps (s)"):
+    def show_durations(self, title="Temps d'exécution par dataset et ordonnancement", ylabel="Temps (s)"):
         """Affiche un graphique en barres des temps d'exécution."""
         if not self.data:
             return
@@ -43,6 +43,37 @@ class PlotBuilder:
                 values[:, i],
                 width,
                 label=o)
+        plt.xticks(x + width * (len(ordonnancements) - 1) / 2, datasets)
+        plt.ylabel(ylabel)
+        plt.title(title)
+        plt.legend(title="Ordonnancement")
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+        plt.tight_layout()
+        plt.show()
+
+    def show_speedups(self, baseline_order: str, title="Speedup par dataset et ordonnancement", ylabel="Speedup"):
+        """Affiche un graphique en barres des speedups par rapport à un ordonnancement de référence."""
+        if not self.data:
+            return
+        datasets = list(self.data.keys())
+        ordonnancements = sorted({o for d in self.data.values() for o in d.keys() if o != baseline_order})
+        values = np.array([
+            [
+                (self.data[d][baseline_order] / self.data[d][o]) if self.data[d].get(baseline_order) and self.data[d].get(o) else 0
+                for o in ordonnancements
+            ]
+            for d in datasets
+        ])
+        x = np.arange(len(datasets))
+        width = 0.8 / len(ordonnancements)
+        plt.figure(figsize=(10, 6))
+        for i, o in enumerate(ordonnancements):
+            plt.bar(
+                x + i * width,
+                values[:, i],
+                width,
+                label=o)
+        plt.axhline(y=1, color='r', linestyle='--', linewidth=1, label=baseline_order)
         plt.xticks(x + width * (len(ordonnancements) - 1) / 2, datasets)
         plt.ylabel(ylabel)
         plt.title(title)
