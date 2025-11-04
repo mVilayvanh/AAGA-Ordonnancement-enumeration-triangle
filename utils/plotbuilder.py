@@ -25,7 +25,7 @@ class PlotBuilder:
             self.add_order(dataset, order)
         self.data[dataset][order] = time
 
-    def show_durations(self, title="Temps d'exécution par dataset et ordonnancement", ylabel="Temps (s)"):
+    def build_durations(self, title="Temps d'exécution par dataset et ordonnancement", ylabel="Temps (s)"):
         """Affiche un graphique en barres des temps d'exécution."""
         if not self.data:
             return
@@ -49,10 +49,9 @@ class PlotBuilder:
         plt.legend(title="Ordonnancement")
         plt.grid(axis='y', linestyle='--', alpha=0.7)
         plt.tight_layout()
-        plt.show()
 
-    def show_speedups(self, baseline_order: str, title="Speedup par dataset et ordonnancement", ylabel="Speedup"):
-        """Affiche un graphique en barres des speedups par rapport à un ordonnancement de référence."""
+    def build_speedups(self, baseline_order: str, title="Speedup par dataset et ordonnancement", ylabel="Speedup"):
+        """Fabrique les graphique en barres des speedups par rapport à un ordonnancement de référence."""
         if not self.data:
             return
         datasets = list(self.data.keys())
@@ -80,6 +79,8 @@ class PlotBuilder:
         plt.legend(title="Ordonnancement")
         plt.grid(axis='y', linestyle='--', alpha=0.7)
         plt.tight_layout()
+
+    def show(self):
         plt.show()
 
     def __repr__(self):
