@@ -43,22 +43,23 @@ if __name__ == "__main__":
             rank_time = clock.elapsed()
             clock.reset()
 
-            # clock.start()
-            # n_triangles = len(TA.A_plus_plus(g, ranklist=rank_list))
-            # a_plus_plus_time = clock.elapsed()
-            # clock.reset()
-
             clock.start()
-            TA.A_plus_minus(g, ranklist=rank_list)
-            a_plus_minus_time = clock.elapsed()
+            n_triangles = len(TA.A_plus_plus(g, ranklist=rank_list))
+            a_plus_plus_time = clock.elapsed()
             clock.reset()
 
-            pb_full.add_time(graph_name, f"{orders[i]}", rank_time + a_plus_minus_time)
-            pb_mere.add_time(graph_name, f"{orders[i]}", a_plus_minus_time)
+            # clock.start()
+            # TA.A_plus_minus(g, ranklist=rank_list)
+            # a_plus_minus_time = clock.elapsed()
+            # clock.reset()
 
-    pb_full.show()
-    pb_mere.show()
+            pb_full.add_time(graph_name, f"{orders[i]}", rank_time + a_plus_plus_time)
+            pb_mere.add_time(graph_name, f"{orders[i]}", a_plus_plus_time)
 
+    pb_full.show_durations(title="Durées d'exécution (full-listing) par dataset et ordonnancement")
+    pb_full.show_speedups(baseline_order="Degenerancy", title="Speedups (full-listing) par dataset et ordonnancement")
+    pb_mere.show_durations(title="Durées d'exécution (mere-listing) par dataset et ordonnancement")
+    pb_mere.show_speedups(baseline_order="Degenerancy", title="Speedups (mere-listing) par dataset et ordonnancement")
 
         # # --- degre order ---
         # # --- mere listing ---
