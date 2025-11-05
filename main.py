@@ -1,7 +1,6 @@
 import order.order_deg as ODEG
 import order.order_degene as ODEGNE
 import order.order_similarity as ODSIM
-import order.order_louvain as ODLOUV
 import order.order_clustering as ODCLU
 import utils.file_parser as FP
 import utils.plotbuilder as PB
@@ -16,7 +15,7 @@ if __name__ == "__main__":
                  ODEG.rank_nodes_by_degree_asc, 
                  ODEG.rank_nodes_by_degree_desc,
                  ODSIM.compute_similarity_order,
-                 ODLOUV.compute_louvain_order]
+                 ODCLU.rank_nodes_by_local_clustering_order]
     pb_full = PB.PlotBuilder()
     pb_mere = PB.PlotBuilder()
     clock = CL.Clock()
@@ -31,7 +30,6 @@ if __name__ == "__main__":
             full_path = os.path.join("ressources/", filepath)
             graph_dict[full_path] = FP.parse_file_to_directed_graph(full_path)
 
-    print("Triangle enumeration for each graph:")
     for graph_name, g in graph_dict.items():
         print(f"\nGraph: {graph_name}")
         for i in range(len(orders)):
@@ -42,11 +40,6 @@ if __name__ == "__main__":
             clock.stop()
             rank_time = clock.elapsed()
             clock.reset()
-
-            # clock.start()
-            # n_triangles = len(TA.A_plus_plus(g, ranklist=rank_list))
-            # a_plus_plus_time = clock.elapsed()
-            # clock.reset()
 
             clock.start()
             TA.A_plus_minus(g, ranklist=rank_list)
