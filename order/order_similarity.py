@@ -1,24 +1,18 @@
 import utils.directed_graph as DG
-from functools import cmp_to_key
-from collections import defaultdict, deque
-from functools import lru_cache
 
-
-def compute_similarity_order(g):
+def compute_similarity_order(g : DG.DirectedGraph) -> list:
     """
         Compute node order based on local homophily.
 
         Args:
             g: DirectedGraph
-            tau: similarity threshold (between 0 and 1)
-            alpha: homophily threshold to activate filtering
 
         Returns:
             ordered_nodes: list of nodes ordered by their homophily score
     """
 
     
-    def similarity(v, w):
+    def similarity(v : int, w : int) -> float:
         """
             Similarity of Jaccard
 
