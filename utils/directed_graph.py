@@ -16,6 +16,9 @@ class DirectedGraph:
         self.out_degrees = dict()
 
         self.computed_degrees = False
+
+        self.clustering_coefficients = dict()
+        self.computed_clustering = False
         
     def __str__(self) -> str:
         return str(self.successors)
@@ -82,6 +85,37 @@ class DirectedGraph:
             return 0.0
         else:
             return m / (n * (n - 1))
+
+    def clustering_coefficient(self, node) -> float:
+        """
+        Calcul du coefficient de clustering local sortant pour un noeud.
+        
+        Ce coefficient local de clustering d'un noeud u mesure le nombre de connexions
+        qu'il existe entre ses même successeurs.
+        L'intuition est que si les successeurs de u sont connectés entre eux,
+        les chances qu'ils forment des triangles avec d'autres noeuds augmentent.
+        """
+        successors = self.successors_of_node(node)
+        out_degree = self.get_out_degree(node)
+
+        if out_degree < 2:
+            return 0.0
+
+        edges = 0
+        for v in successors:
+            edges += len(self.successors_of_node(v) & successors)
+
+        return edges / (out_degree * (out_degree - 1))
+
+    def compute_clustering_coefficients(self) -> None:
+        """
+        Calcul des coefficients de clustering pour tous les noeuds.
+        """
+        if self.computed_clustering:
+            return
+        for u in self.nodes:
+            self.clustering_coefficients[u] = self.clustering_coefficient(u)
+        self.computed_clustering = True
 
     def stats(self) -> str:
         # Stat du TME1
