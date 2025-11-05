@@ -20,7 +20,7 @@ if __name__ == "__main__":
     pb_full = PB.PlotBuilder()
     pb_mere = PB.PlotBuilder()
     clock = CL.Clock()
-    n = 5
+    n = 1
     # Charger les graphes
     for filepath in os.listdir("ressources/"):
         if filepath.endswith(".txt"):
