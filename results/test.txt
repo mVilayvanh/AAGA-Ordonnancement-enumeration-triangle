@@ -1,0 +1,16 @@
+Ordonnacements à tester: ['Degenerancy', 'Degree', 'Similarity', 'Clustering', 'Succ_Degree']
+Dataset: ressources/Amazon0302.txt
+Statistics:
+Nombre de noeuds: 262111
+Nombre d'arcs: 1234877
+Densité: 0.000018
+Dataset: ressources/IP-inet-undir.txt
+Statistics:
+Nombre de noeuds: 9740
+Nombre d'arcs: 35567
+Densité: 0.000375
+Dataset: ressources/AS-Caida-dir.txt
+Statistics:
+Nombre de noeuds: 26475
+Nombre d'arcs: 57582
+Densité: 0.000082

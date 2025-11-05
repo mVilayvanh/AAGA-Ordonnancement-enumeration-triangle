@@ -1,10 +1,6 @@
 import utils.directed_graph as DG
-from functools import cmp_to_key
-from collections import defaultdict, deque
-from functools import lru_cache
 
-
-def compute_similarity_order(g):
+def compute_similarity_order(g : DG.DirectedGraph) -> list:
     """
         Compute node order based on local homophily.
 
@@ -16,7 +12,7 @@ def compute_similarity_order(g):
     """
 
     
-    def similarity(v, w):
+    def similarity(v : int, w : int) -> float:
         """
             Similarity of Jaccard
 
@@ -52,36 +48,5 @@ def compute_similarity_order(g):
     # --- Order nodes by similarity score ---
     ordered_nodes = sorted(similarity_score.keys(),
                            key=lambda u: similarity_score[u],
-                           reverse=True)
-    return ordered_nodes
-
-def compute_degree_order(g):
-    """
-        Compute node order based on the sum of successor degrees.
-
-        Args:
-            g: DirectedGraph
-
-        Returns:
-            ordered_nodes: list of nodes ordered by their degrees score
-    """
-
-     # --- Compute similarity score for each node ---
-    degree_score = {}
-    for u in g.nodes:
-        neighbors = list(g.successors_of_node(u))
-        if len(neighbors) < 2:
-            degree_score[u] = 0
-            continue
-        deg_sum = 0
-        pairs = 0
-        for i in range(len(neighbors)):
-            deg_sum += g.get_degree(neighbors[i])
-            pairs += 1
-        degree_score[u] = deg_sum / pairs if pairs > 0 else 0
-
-    # --- Order nodes by similarity score ---
-    ordered_nodes = sorted(degree_score.keys(),
-                           key=lambda u: degree_score[u],
                            reverse=True)
     return ordered_nodes
